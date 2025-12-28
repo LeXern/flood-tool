@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "flood_tool"
+version = "0.1.0"
+description = "Flood Vulnerability Assessment Workflow for Assignment 1"
+authors = ["Your Name <your.email@example.com>"]
+readme = "README.md"
+packages = [{include = "flood_tool"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+requests = "^2.31.0"
+shapely = "^2.0.0"
+folium = "^0.15.0"
+geopandas = "^0.14.0"
+pandas = "^2.1.0"
+matplotlib = "^3.8.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+jupyter = "^1.0.0"
+notebook = "^7.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
