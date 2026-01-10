@@ -1,8 +1,5 @@
 from flood_tool.data_loader import fetch_osm_data
 from flood_tool.analysis import perform_analysis
-from flood_tool.data_loader import fetch_osm_data
-from flood_tool.analysis import perform_analysis
-# Actually, I removed decorators earlier. Checking import usage.
 
 def run_case(name, bbox):
     print(f"\n{'='*50}")
@@ -39,8 +36,4 @@ if __name__ == "__main__":
     # Venice (approx center)
     venice_bbox = (45.4300, 12.3100, 45.4450, 12.3400)
     
-    # Cologne (approx center, near Rhine)
-    cologne_bbox = (50.9300, 6.9500, 50.9450, 6.9700)
-    
     run_case("Venice", venice_bbox)
-    run_case("Cologne", cologne_bbox)
