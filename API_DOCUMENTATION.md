@@ -19,7 +19,6 @@ poetry run uvicorn flood_tool.api:app --reload
 
 Once running, you can access the documentation at:
 -   **Interactive Swagger UI**: `http://localhost:8000/docs`
--   **ReDoc (Clean Docs)**: `http://localhost:8000/redoc`
 
 ## 3. Endpoints Overview
 
