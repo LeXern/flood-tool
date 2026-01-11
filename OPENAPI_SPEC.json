@@ -1,0 +1,252 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Flood Vulnerability Assessment API",
+    "description": "A scientific API for building-level flood risk analysis using vector data.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "General"
+        ],
+        "summary": "Read Root",
+        "description": "Welcome endpoint with metadata.",
+        "operationId": "read_root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/analyze": {
+      "post": {
+        "tags": [
+          "Analysis"
+        ],
+        "summary": "Run Analysis",
+        "description": "Perform a complete flood risk analysis for the specified bounding box.\nThis includes fetching data from OSM and running spatial algorithms.",
+        "operationId": "run_analysis_analyze_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnalysisRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalysisResults"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "General"
+        ],
+        "summary": "Health Check",
+        "description": "Basic health check endpoint.",
+        "operationId": "health_check_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnalysisRequest": {
+        "properties": {
+          "city_name": {
+            "type": "string",
+            "title": "City Name",
+            "description": "Name of the city/region"
+          },
+          "bbox": {
+            "$ref": "#/components/schemas/BBox"
+          },
+          "water_threshold": {
+            "type": "integer",
+            "title": "Water Threshold",
+            "description": "Distance (m) for vulnerability",
+            "default": 50
+          },
+          "hotspot_radius": {
+            "type": "integer",
+            "title": "Hotspot Radius",
+            "description": "Radius (m) for cluster detection",
+            "default": 100
+          },
+          "min_neighbors": {
+            "type": "integer",
+            "title": "Min Neighbors",
+            "description": "Min neighbors for hotspots",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "required": [
+          "city_name",
+          "bbox"
+        ],
+        "title": "AnalysisRequest"
+      },
+      "AnalysisResults": {
+        "properties": {
+          "city_name": {
+            "type": "string",
+            "title": "City Name"
+          },
+          "total_buildings": {
+            "type": "integer",
+            "title": "Total Buildings"
+          },
+          "vulnerable_count": {
+            "type": "integer",
+            "title": "Vulnerable Count"
+          },
+          "vulnerability_rate": {
+            "type": "number",
+            "title": "Vulnerability Rate"
+          },
+          "hotspot_count": {
+            "type": "integer",
+            "title": "Hotspot Count"
+          },
+          "top_hotspots": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Top Hotspots"
+          }
+        },
+        "type": "object",
+        "required": [
+          "city_name",
+          "total_buildings",
+          "vulnerable_count",
+          "vulnerability_rate",
+          "hotspot_count",
+          "top_hotspots"
+        ],
+        "title": "AnalysisResults"
+      },
+      "BBox": {
+        "properties": {
+          "min_lat": {
+            "type": "number",
+            "title": "Min Lat",
+            "description": "Minimum latitude"
+          },
+          "min_lon": {
+            "type": "number",
+            "title": "Min Lon",
+            "description": "Minimum longitude"
+          },
+          "max_lat": {
+            "type": "number",
+            "title": "Max Lat",
+            "description": "Maximum latitude"
+          },
+          "max_lon": {
+            "type": "number",
+            "title": "Max Lon",
+            "description": "Maximum longitude"
+          }
+        },
+        "type": "object",
+        "required": [
+          "min_lat",
+          "min_lon",
+          "max_lat",
+          "max_lon"
+        ],
+        "title": "BBox"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
