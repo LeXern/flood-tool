@@ -22,13 +22,21 @@ If it's not installed, the recommended way is using the official installer:
 
 ### Step C: Add Poetry to PATH
 If you just installed it and it still doesn't work, you may need to manually add it to your PATH:
+
+#### Option 1: Manual Method (UI)
 1.  Open the **Start Menu**, search for "Edit the system environment variables", and press Enter.
 2.  Click **Environment Variables**.
 3.  Under **User variables**, find the `Path` variable and click **Edit**.
 4.  Click **New** and add the following path:
     `%APPDATA%\Python\Scripts`
-    *(Alternatively, if you used the official installer, look for `%USERPROFILE%\.local\bin` or `%APPDATA%\pypoetry\venv\Scripts`)*.
 5.  Click **OK** on all windows and **restart your terminal**.
+
+#### Option 2: Automated Method (PowerShell)
+Run the following command to permanently add the directory to your user PATH:
+```powershell
+$Path = [System.Environment]::GetEnvironmentVariable("Path", "User"); [System.Environment]::SetEnvironmentVariable("Path", $Path + ";$env:APPDATA\Python\Scripts", "User")
+```
+*Note: Restart your terminal or IDE for the change to take effect.*
 
 ---
 
